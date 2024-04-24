@@ -6,7 +6,7 @@ import {
   fetchRevenue,
   fetchLatestInvoices,
   fetchCardData,
-} from '@/app/lib/data';
+} from '@/app/lib/datem';
 
 export default async function Page() {
   const revenue = await fetchRevenue();

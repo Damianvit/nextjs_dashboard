@@ -1,0 +1,48 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+
+}
+
+model Post {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  slug     String    @unique
+  title    String
+  body     String
+  author   User      @relation(fields: [authorId], references: [id])
+  authorId String    @db.ObjectId
+}
+
+model User {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String   @unique
+  name    String?
+  posts   Post[]
+}
+model Customer {
+      id       String    @id @default(auto()) @map("_id") @db.ObjectId
+name        String
+  email       String
+  imageUrl    String
+  invoices    Invoice[] // One-to-many relationship: One customer can have multiple invoices
+}
+
+model Invoice {
+      id       String    @id @default(auto()) @map("_id") @db.ObjectId
+customerId  String
+  amount      Int
+  status      String
+  date        DateTime
+  customer    Customer  @relation(fields: [customerId], references: [id]) // Many-to-one relationship: Many invoices belong to one customer
+}
+
+model Revenue {
+  month    String  @id @default(auto()) @map("_id") @db.ObjectId
+
+  revenue  Int
+}
